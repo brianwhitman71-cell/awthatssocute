@@ -37,15 +37,12 @@ export async function POST(req: NextRequest) {
         product_data: {
           name: item.name,
           images: [`${origin}${item.image}`],
-          tax_code: PHYSICAL_GOODS_TAX_CODE,
         },
         unit_amount: Math.round(item.price * 100),
-        tax_behavior: "exclusive",  // tax shown separately, added on top
       },
       quantity: item.quantity,
     })),
     mode: "payment",
-    automatic_tax: { enabled: true },
     success_url: `${origin}/success?session_id={CHECKOUT_SESSION_ID}`,
     cancel_url: `${origin}/cancel`,
     shipping_address_collection: {
