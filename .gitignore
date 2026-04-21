@@ -48,3 +48,6 @@ next-env.d.ts
 # Local temp files
 temp/
 "resend keys.rtf"
+
+# Local Netlify folder
+.netlify
