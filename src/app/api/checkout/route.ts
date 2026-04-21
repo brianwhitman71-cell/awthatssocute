@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { stripe } from "@/lib/stripe";
+import { getStripe } from "@/lib/stripe";
 import { getZoneForState, buildShippingOptions } from "@/lib/shipping-zones";
 
 interface CartItem {
@@ -29,7 +29,7 @@ export async function POST(req: NextRequest) {
   const zone = getZoneForState(stateCode);
   const shippingOptions = buildShippingOptions(zone);
 
-  const session = await stripe.checkout.sessions.create({
+  const session = await getStripe().checkout.sessions.create({
     payment_method_types: ["card"],
     line_items: items.map((item) => ({
       price_data: {

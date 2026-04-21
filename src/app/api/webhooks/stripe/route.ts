@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { stripe } from "@/lib/stripe";
+import { getStripe } from "@/lib/stripe";
 import { getZoneForState, buildShippingOptions } from "@/lib/shipping-zones";
 
 export async function POST(req: NextRequest) {
@@ -11,9 +11,9 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Missing signature or webhook secret" }, { status: 400 });
   }
 
-  let event: ReturnType<typeof stripe.webhooks.constructEvent>;
+  let event: ReturnType<typeof getStripe().webhooks.constructEvent>;
   try {
-    event = stripe.webhooks.constructEvent(body, sig, webhookSecret);
+    event = getStripe().webhooks.constructEvent(body, sig, webhookSecret);
   } catch (err) {
     const message = err instanceof Error ? err.message : "Webhook signature verification failed";
     return NextResponse.json({ error: message }, { status: 400 });
@@ -31,7 +31,7 @@ export async function POST(req: NextRequest) {
     const zone = getZoneForState(state);
     const shippingOptions = buildShippingOptions(zone);
 
-    await stripe.checkout.sessions.update(session.id, {
+    await getStripe().checkout.sessions.update(session.id, {
       shipping_options: shippingOptions,
     });
   }
