@@ -1,9 +1,28 @@
-export default function Home() {
+import Header from "@/components/Header";
+import HeroBanner from "@/components/HeroBanner";
+import HeroSection from "@/components/HeroSection";
+import ShopSection from "@/components/ShopSection";
+import InfoSection from "@/components/InfoSection";
+import ContactSection from "@/components/ContactSection";
+import Footer from "@/components/Footer";
+import Cart from "@/components/Cart";
+import { CartProvider } from "@/context/CartContext";
+import ScrollToTop from "@/components/ScrollToTop";
+
+export default function HomePage() {
   return (
-    <main className="flex min-h-screen items-center justify-center">
-      <p className="text-muted-foreground">
-        Clone target not yet built. Run <code className="font-mono text-foreground">/clone-website</code> to start.
-      </p>
-    </main>
+    <CartProvider>
+      <ScrollToTop />
+      <Header />
+      <HeroBanner />
+      <main>
+        <HeroSection />
+        <ShopSection />
+        <InfoSection />
+        <ContactSection />
+      </main>
+      <Footer />
+      <Cart />
+    </CartProvider>
   );
 }
